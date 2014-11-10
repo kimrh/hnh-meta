@@ -12,8 +12,8 @@ public class MetaDataTest {
 //	@Ignore
 	@Test
 	public void test() throws Exception {
-		Meta.testOrPrint(0, 0, null);         // Å×½ºÆ®
-		Meta.testOrPrint(30, 1, null);        // 31¹øÂ° Á¾¸ñºÎÅÍ 1Á¾¸ñ ÄÜ¼Ö¿¡ Ãâ·Â
-		Meta.testOrPrint(30, 2, "rows.txt");  // 31¹øÂ° Á¾¸ñºÎÅÍ 2Á¾¸ñ ÆÄÀÏ¿¡ Ãâ·Â
+		Meta.testOrPrint(0, 0, null);         // í…ŒìŠ¤íŠ¸
+		Meta.testOrPrint(30, 1, null);        // 31ë²ˆì§¸ ì¢…ëª©ë¶€í„° 1ì¢…ëª© ì½˜ì†”ì— ì¶œë ¥
+		Meta.testOrPrint(30, 2, "rows.txt");  // 31ë²ˆì§¸ ì¢…ëª©ë¶€í„° 2ì¢…ëª© íŒŒì¼ì— ì¶œë ¥
 	}
 }

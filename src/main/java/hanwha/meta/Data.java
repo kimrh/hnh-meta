@@ -3,14 +3,14 @@ package hanwha.meta;
 import java.util.Map;
 
 /**
- * Å° ±¸¼º ¸ŞÅ¸ µ¥ÀÌÅÍ
+ * í‚¤ êµ¬ì„± ë©”íƒ€ ë°ì´í„°
  */
 class Data implements Comparable<Data> {
-	private int    keyIndex;  // Å° ÀÎµ¦½º
-	private String keyItnm;   // Å°°ªÇ×¸ñ¸í
-	private String cndItnm;   // Á¶°ÇÇ×¸ñ¸í
-	private int    cndOp;     // ºñ±³¿¬»êÀÚ
-	private int    cndValue;  // Á¶°Ç°ª
+	private int    keyIndex;  // í‚¤ ì¸ë±ìŠ¤
+	private String keyItnm;   // í‚¤ê°’í•­ëª©ëª…
+	private String cndItnm;   // ì¡°ê±´í•­ëª©ëª…
+	private int    cndOp;     // ë¹„êµì—°ì‚°ì
+	private int    cndValue;  // ì¡°ê±´ê°’
 
 	Data(int kIndex, String kItnm, String cItnm, int cOp, int cValue) {
 		keyIndex = kIndex;
@@ -51,11 +51,11 @@ class Data implements Comparable<Data> {
 		false, false, false, true, true,   false, false, false, false, false,
 		false, false, true, false, false,   true, false, true };
 
-	// Á¶°ÇÀ» °Ë»çÇÏ¿© Å° ¹è¿­¿¡ °ªÀ» ³Ö´Â´Ù 
-	void getKey(Object[] keys, Map<String, Object> °è¾àÁ¤º¸) {
+	// ì¡°ê±´ì„ ê²€ì‚¬í•˜ì—¬ í‚¤ ë°°ì—´ì— ê°’ì„ ë„£ëŠ”ë‹¤ 
+	void getKey(Object[] keys, Map<String, Object> ê³„ì•½ì •ë³´) {
 		boolean isConditionMet = true;
 		if (0 < cndOp) {
-			Object o = °è¾àÁ¤º¸.get(cndItnm);
+			Object o = ê³„ì•½ì •ë³´.get(cndItnm);
 			int value;
 			if (o == null) {
 				value = 0;
@@ -74,7 +74,7 @@ class Data implements Comparable<Data> {
 			}
 		}
 		if (isConditionMet) {
-			Object value = °è¾àÁ¤º¸.get(keyItnm);
+			Object value = ê³„ì•½ì •ë³´.get(keyItnm);
 			if (value != null) {
 				if (IS_KEY_INT[keyIndex]) {
 					if (value instanceof String) {

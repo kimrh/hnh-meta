@@ -25,19 +25,19 @@ public class Meta {
 		}
 	}
 
-	private static   int[]    intSet; // ±¸ºĞ-Á¾·áÀÏ ÁıÇÕ
-	private static  Data[]   dataSet; // µ¥ÀÌÅÍ ÁıÇÕ
-	private static short[][] pairSet; // Á¤¼ö Â¦ ÁıÇÕ
-	private static short[]  dataList; // µ¥ÀÌÅÍ ¿­
-	private static short[] data1List; // ´ãº¸ µ¥ÀÌÅÍ ¿­
-	private static short[] data2List; // Á¾¸ñ µ¥ÀÌÅÍ ¿­
-	private static short[]   cvrList; // ´ãº¸ ÄÚµå ÀÎµ¦½º ¿­
-	private static short[][]     cvr; // ´ãº¸(ÄÚµå ÀÎµ¦½º ¿­ ½ÃÀÛ, ³¡, µ¥ÀÌÅÍ ¿­ ½ÃÀÛ) ¿­
-	private static   int[]        im; // Á¾¸ñ ÄÚµå ¿­
+	private static   int[]    intSet; // êµ¬ë¶„-ì¢…ë£Œì¼ ì§‘í•©
+	private static  Data[]   dataSet; // ë°ì´í„° ì§‘í•©
+	private static short[][] pairSet; // ì •ìˆ˜ ì§ ì§‘í•©
+	private static short[]  dataList; // ë°ì´í„° ì—´
+	private static short[] data1List; // ë‹´ë³´ ë°ì´í„° ì—´
+	private static short[] data2List; // ì¢…ëª© ë°ì´í„° ì—´
+	private static short[]   cvrList; // ë‹´ë³´ ì½”ë“œ ì¸ë±ìŠ¤ ì—´
+	private static short[][]     cvr; // ë‹´ë³´(ì½”ë“œ ì¸ë±ìŠ¤ ì—´ ì‹œì‘, ë, ë°ì´í„° ì—´ ì‹œì‘) ì—´
+	private static   int[]        im; // ì¢…ëª© ì½”ë“œ ì—´
 
 	/**
-	 * º¸Çè·á/ÁØºñ±İ/»ç¾÷ºñ Ã£±â Å° ±¸¼º Á¤º¸¸¦ °»½ÅÇÑ´Ù.
-	 * @throws Exception Å×ÀÌºí ÀĞ±â ¿À·ù, µ¥ÀÌÅÍ ¹è¿­ ¿ø¼Ò Å©±â ¿À·ù.
+	 * ë³´í—˜ë£Œ/ì¤€ë¹„ê¸ˆ/ì‚¬ì—…ë¹„ ì°¾ê¸° í‚¤ êµ¬ì„± ì •ë³´ë¥¼ ê°±ì‹ í•œë‹¤.
+	 * @throws Exception í…Œì´ë¸” ì½ê¸° ì˜¤ë¥˜, ë°ì´í„° ë°°ì—´ ì›ì†Œ í¬ê¸° ì˜¤ë¥˜.
 	 */
 	public static synchronized void refresh() throws Exception {
 		IntSet     intSet0 = new  IntSet(3000);
@@ -50,30 +50,30 @@ public class Meta {
 		ImCvr       imCvr0 = new   ImCvr(3000);
 
 		time(null);
-		List<Row> rows = Dao.getRowList();    // Å° ±¸¼º Á¤º¸¸¦ ¸ğµÎ ÀĞ´Â´Ù
+		List<Row> rows = Dao.getRowList();    // í‚¤ êµ¬ì„± ì •ë³´ë¥¼ ëª¨ë‘ ì½ëŠ”ë‹¤
 		time("Read");
 
-		int rowCount = rows.size();           // Å° ±¸¼º Á¤º¸ ¼ö
-		rows.add(new Row());                  // Å° ±¸¼º Á¤º¸ÀÇ ³¡À» Ç¥½ÃÇÑ´Ù
+		int rowCount = rows.size();           // í‚¤ êµ¬ì„± ì •ë³´ ìˆ˜
+		rows.add(new Row());                  // í‚¤ êµ¬ì„± ì •ë³´ì˜ ëì„ í‘œì‹œí•œë‹¤
 
 		for (int i = 0; i < rowCount; i++) {
 			Row thisRow = rows.get(i);
 			Row nextRow = rows.get(i + 1);
-			dataList0.append(dataSet0.find(thisRow.data));     // µ¥ÀÌÅÍ
+			dataList0.append(dataSet0.find(thisRow.data));     // ë°ì´í„°
 
 			if (!thisRow.sameCdNddt(nextRow)) {
-				int cdNddt = intSet0.find(thisRow.cdNddt);     // ±¸ºĞ-Á¾·áÀÏ
-				int   data = pairSet0.find(dataList0.find());  // µ¥ÀÌÅÍ ¸®½ºÆ®
+				int cdNddt = intSet0.find(thisRow.cdNddt);     // êµ¬ë¶„-ì¢…ë£Œì¼
+				int   data = pairSet0.find(dataList0.find());  // ë°ì´í„° ë¦¬ìŠ¤íŠ¸
 				data1List0.append(pairSet0.find(cdNddt, data));
 
 				if (!thisRow.sameCvrcd(nextRow)) {
-					cvrList0.append(intSet0.find(thisRow.cvrCd));  // ´ãº¸ ÄÚµå
+					cvrList0.append(intSet0.find(thisRow.cvrCd));  // ë‹´ë³´ ì½”ë“œ
 					data2List0.append(pairSet0.find(data1List0.find()));
 
 					if (!thisRow.sameImcd(nextRow)) {
-						imCvr0.append(thisRow.imCd,        // Á¾¸ñ ÄÚµå
-						              cvrList0.find(),     // ´ãº¸ ÄÚµå ¸®½ºÆ® 
-						              data2List0.find());  // ´ãº¸  µ¥ÀÌÅÍ ¸®½ºÆ®
+						imCvr0.append(thisRow.imCd,        // ì¢…ëª© ì½”ë“œ
+						              cvrList0.find(),     // ë‹´ë³´ ì½”ë“œ ë¦¬ìŠ¤íŠ¸ 
+						              data2List0.find());  // ë‹´ë³´  ë°ì´í„° ë¦¬ìŠ¤íŠ¸
 					}
 				}
 			}
@@ -113,29 +113,29 @@ public class Meta {
 	}
 
 	/**
-	 * °æ°ú ½Ã°£À» Ãâ·ÂÇÑ´Ù.
-	 * @param title Á¦¸ñ. nullÀÌ¸é °æ°ú ½Ã°£ ÃøÁ¤ ½ÃÀÛ.
+	 * ê²½ê³¼ ì‹œê°„ì„ ì¶œë ¥í•œë‹¤.
+	 * @param title ì œëª©. nullì´ë©´ ê²½ê³¼ ì‹œê°„ ì¸¡ì • ì‹œì‘.
 	 */
 	private static void time(String title) {
 		nano = System.nanoTime();
 		if (title != null) {
-			System.out.format("%s(%.3fÃÊ) ", title, (nano - nano0)/1000000000.);
+			System.out.format("%s(%.3fì´ˆ) ", title, (nano - nano0)/1000000000.);
 		}
 		nano0 = nano;
 	}
 
-	private static long nano0, nano;  // ³ª³ë ÃÊ ´ÜÀ§ °æ°ú ±¸°£: ½ÃÀÛ, ³¡
+	private static long nano0, nano;  // ë‚˜ë…¸ ì´ˆ ë‹¨ìœ„ ê²½ê³¼ êµ¬ê°„: ì‹œì‘, ë
 
 	/**
-	 * Á¾¸ñ µ¥ÀÌÅÍ ¿­ -- (Á¾¸ñ ÄÚµå, ´ãº¸ ÄÚµå ÀÎµ¦½º ¿­, ´ãº¸ µ¥ÀÌÅÍ ¿­)ÀÇ ¿­
+	 * ì¢…ëª© ë°ì´í„° ì—´ -- (ì¢…ëª© ì½”ë“œ, ë‹´ë³´ ì½”ë“œ ì¸ë±ìŠ¤ ì—´, ë‹´ë³´ ë°ì´í„° ì—´)ì˜ ì—´
 	 */
 	private static class ImCvr {
-		private int[]      im;  // Á¾¸ñ ÄÚµå ¹è¿­
-		private short[][] cvr;  // ´ãº¸(ÄÚµå ÀÎµ¦½º ¿­ ½ÃÀÛ, ³¡, µ¥ÀÌÅÍ ¿­ ½ÃÀÛ) ¹è¿­
-		private int      size;  // Á¾¸ñ ¼ö
+		private int[]      im;  // ì¢…ëª© ì½”ë“œ ë°°ì—´
+		private short[][] cvr;  // ë‹´ë³´(ì½”ë“œ ì¸ë±ìŠ¤ ì—´ ì‹œì‘, ë, ë°ì´í„° ì—´ ì‹œì‘) ë°°ì—´
+		private int      size;  // ì¢…ëª© ìˆ˜
 
 		/**
-		 * @param initialCapacity Ã³À½ ¹è¿­ ¿ë·®(= Á¾¸ñ ¼ö ÃÖ´ë°ª)
+		 * @param initialCapacity ì²˜ìŒ ë°°ì—´ ìš©ëŸ‰(= ì¢…ëª© ìˆ˜ ìµœëŒ€ê°’)
 		 */
 		ImCvr(int initialCapacity) {
 			im  = new int[initialCapacity];
@@ -143,26 +143,26 @@ public class Meta {
 		}
 
 		/**
-		 * Å×ÀÌºí¿¡ ÇÑ Á¾¸ñÀÇ µ¥ÀÌÅÍ¸¦ ³Ö´Â´Ù
-		 * @param imCd    Á¾¸ñ ÄÚµå
-		 * @param cvrCds  ´ãº¸ ÄÚµå ÀÎµ¦½º ¹è¿­ÀÇ {½ÃÀÛ ÀÎµ¦½º, ³¡ ÀÎµ¦½º}
-		 * @param cvrData ´ãº¸ µ¥ÀÌÅÍ ¹è¿­ÀÇ {½ÃÀÛ ÀÎµ¦½º, ³¡ ÀÎµ¦½º}
+		 * í…Œì´ë¸”ì— í•œ ì¢…ëª©ì˜ ë°ì´í„°ë¥¼ ë„£ëŠ”ë‹¤
+		 * @param imCd    ì¢…ëª© ì½”ë“œ
+		 * @param cvrCds  ë‹´ë³´ ì½”ë“œ ì¸ë±ìŠ¤ ë°°ì—´ì˜ {ì‹œì‘ ì¸ë±ìŠ¤, ë ì¸ë±ìŠ¤}
+		 * @param cvrData ë‹´ë³´ ë°ì´í„° ë°°ì—´ì˜ {ì‹œì‘ ì¸ë±ìŠ¤, ë ì¸ë±ìŠ¤}
 		 */
 		void append(int imCd, int[] cvrCds, int[] cvrData) throws Exception {
 			int a = cvrCds[0], b = cvrCds[1], c = cvrData[0];
 			if (a < Short.MIN_VALUE || Short.MAX_VALUE < a ||
 			    b < Short.MIN_VALUE || Short.MAX_VALUE < b ||
 			    c < Short.MIN_VALUE || Short.MAX_VALUE < c) {
-				throw new Exception("shortÇüÀ¸·Î ¹ŞÀ» ¼ö ¾ø½À´Ï´Ù.");
+				throw new Exception("shortí˜•ìœ¼ë¡œ ë°›ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			}
 			if (im.length <= size) {
 				im  = Arrays.copyOf(im, extend(size));
 				cvr = copyCvr(extend(size));
 			}
-			im[size]     = imCd;       // Á¾¸ñ ÄÚµå
-			cvr[0][size] = (short) a;  // ´ãº¸ ÄÚµå ÀÎµ¦½º ¹è¿­ ½ÃÀÛ ÀÎµ¦½º
-			cvr[1][size] = (short) b;  // ´ãº¸ ÄÚµå ÀÎµ¦½º ¹è¿­ ³¡ ÀÎµ¦½º
-			cvr[2][size] = (short) c;  // ´ãº¸ µ¥ÀÌÅÍ ¹è¿­ ½ÃÀÛ ÀÎµ¦½º
+			im[size]     = imCd;       // ì¢…ëª© ì½”ë“œ
+			cvr[0][size] = (short) a;  // ë‹´ë³´ ì½”ë“œ ì¸ë±ìŠ¤ ë°°ì—´ ì‹œì‘ ì¸ë±ìŠ¤
+			cvr[1][size] = (short) b;  // ë‹´ë³´ ì½”ë“œ ì¸ë±ìŠ¤ ë°°ì—´ ë ì¸ë±ìŠ¤
+			cvr[2][size] = (short) c;  // ë‹´ë³´ ë°ì´í„° ë°°ì—´ ì‹œì‘ ì¸ë±ìŠ¤
 			size++;
 		}
 
@@ -188,24 +188,24 @@ public class Meta {
 	private static final String[]  PREFIX = {"IA", "LA"};
 
 	/**
-	 * º¸Çè·á/ÁØºñ±İ/»ç¾÷ºñ Ã£±â Å° ¹è¿­À» ¸¸µç´Ù.
+	 * ë³´í—˜ë£Œ/ì¤€ë¹„ê¸ˆ/ì‚¬ì—…ë¹„ ì°¾ê¸° í‚¤ ë°°ì—´ì„ ë§Œë“ ë‹¤.
 	 *
-	 * @param Å×ÀÌºí±¸ºĞÄÚµå  1=º¸Çè·á, 2=ÁØºñ±İ, 3=»ç¾÷ºñ
-	 * @param Á¾¸ñÄÚµå           Á¾¸ñÄÚµå ±ÛÀÚ¿­
-	 * @param ´ãº¸ÄÚµå           ´ãº¸ÄÚµå ±ÛÀÚ¿­
-	 * @param Àû¿ëÀÏÀÚ           8ÀÚ¸® Á¤¼ö (³â 4ÀÚ¸®, ¿ù 2ÀÚ¸®, ÀÏ 2ÀÚ¸®)
-	 * @param °è¾àÁ¤º¸           Map(°è¾àÁ¤º¸ ÀÌ¸§, °è¾àÁ¤º¸ °ª)
-	 * @return 18°³ Å° ¹è¿­
+	 * @param í…Œì´ë¸”êµ¬ë¶„ì½”ë“œ  1=ë³´í—˜ë£Œ, 2=ì¤€ë¹„ê¸ˆ, 3=ì‚¬ì—…ë¹„
+	 * @param ì¢…ëª©ì½”ë“œ           ì¢…ëª©ì½”ë“œ ê¸€ìì—´
+	 * @param ë‹´ë³´ì½”ë“œ           ë‹´ë³´ì½”ë“œ ê¸€ìì—´
+	 * @param ì ìš©ì¼ì           8ìë¦¬ ì •ìˆ˜ (ë…„ 4ìë¦¬, ì›” 2ìë¦¬, ì¼ 2ìë¦¬)
+	 * @param ê³„ì•½ì •ë³´           Map(ê³„ì•½ì •ë³´ ì´ë¦„, ê³„ì•½ì •ë³´ ê°’)
+	 * @return 18ê°œ í‚¤ ë°°ì—´
 	 */
-	public static Object[] getKeys(int Å×ÀÌºí±¸ºĞÄÚµå,
-	                               String Á¾¸ñÄÚµå, String ´ãº¸ÄÚµå,
-	                               int Àû¿ëÀÏÀÚ, Map<String, Object> °è¾àÁ¤º¸) {
+	public static Object[] getKeys(int í…Œì´ë¸”êµ¬ë¶„ì½”ë“œ,
+	                               String ì¢…ëª©ì½”ë“œ, String ë‹´ë³´ì½”ë“œ,
+	                               int ì ìš©ì¼ì, Map<String, Object> ê³„ì•½ì •ë³´) {
 
-		int imCd = Integer.parseInt(Á¾¸ñÄÚµå.substring(2));   // Á¾¸ñ ÄÚµå
-		if (Á¾¸ñÄÚµå.charAt(0) == 'L') {
-			imCd += D5;    // "LA"·Î ½ÃÀÛÇÏ´Â Á¾¸ñ ÄÚµå
+		int imCd = Integer.parseInt(ì¢…ëª©ì½”ë“œ.substring(2));   // ì¢…ëª© ì½”ë“œ
+		if (ì¢…ëª©ì½”ë“œ.charAt(0) == 'L') {
+			imCd += D5;    // "LA"ë¡œ ì‹œì‘í•˜ëŠ” ì¢…ëª© ì½”ë“œ
 		}
-		int cvrCd = Integer.parseInt(´ãº¸ÄÚµå.substring(3));  // ´ãº¸ ÄÚµå
+		int cvrCd = Integer.parseInt(ë‹´ë³´ì½”ë“œ.substring(3));  // ë‹´ë³´ ì½”ë“œ
 
 		Object[] keys = Data.DEFAULT_KEYS.clone();
 
@@ -219,30 +219,30 @@ public class Meta {
 		}
 
 		do {
-			int m = Arrays.binarySearch(im, imCd);  // Á¾¸ñ ÀÎµ¦½º
-			if (m < 0) break;  // Á¾¸ñ ÄÚµå°¡ ¾ø´Ù
+			int m = Arrays.binarySearch(im, imCd);  // ì¢…ëª© ì¸ë±ìŠ¤
+			if (m < 0) break;  // ì¢…ëª© ì½”ë“œê°€ ì—†ë‹¤
 
 			int c = IntSet.binarySearch(intSet, cvrList,
 			                            cvr[0][m], cvr[1][m], cvrCd);
-			if (c < 0) break;  // Á¾¸ñ¿¡ ´ãº¸ ÄÚµå°¡ ¾ø´Ù
+			if (c < 0) break;  // ì¢…ëª©ì— ë‹´ë³´ ì½”ë“œê°€ ì—†ë‹¤
 
-			int data2 = data2List[cvr[2][m] + (c - cvr[0][m])];  // ´ãº¸ µ¥ÀÌÅÍ
-			int i     = pairSet[0][data2];         // ´ãº¸ µ¥ÀÌÅÍ ½ÃÀÛ
-			int iEnd  = pairSet[1][data2];         // ´ãº¸ µ¥ÀÌÅÍ ³¡
+			int data2 = data2List[cvr[2][m] + (c - cvr[0][m])];  // ë‹´ë³´ ë°ì´í„°
+			int i     = pairSet[0][data2];         // ë‹´ë³´ ë°ì´í„° ì‹œì‘
+			int iEnd  = pairSet[1][data2];         // ë‹´ë³´ ë°ì´í„° ë
 			while (i < iEnd) {
-				int  data1 = data1List[i++];       // (±¸ºĞ-Á¾·áÀÏ, µ¥ÀÌÅÍ) Â¦
-				int cdNddt = intSet[pairSet[0][data1]];  // ±¸ºĞ-Á¾·áÀÏ
-				int     cd = cdNddt / D8;                // ±¸ºĞ
-				if (Å×ÀÌºí±¸ºĞÄÚµå == cd && Àû¿ëÀÏÀÚ <= cdNddt % D8) {
-					int data = pairSet[1][data1];  // µ¥ÀÌÅÍ
-					int j    = pairSet[0][data];   // µ¥ÀÌÅÍ ½ÃÀÛ
-					int jEnd = pairSet[1][data];   // µ¥ÀÌÅÍ ³¡
+				int  data1 = data1List[i++];       // (êµ¬ë¶„-ì¢…ë£Œì¼, ë°ì´í„°) ì§
+				int cdNddt = intSet[pairSet[0][data1]];  // êµ¬ë¶„-ì¢…ë£Œì¼
+				int     cd = cdNddt / D8;                // êµ¬ë¶„
+				if (í…Œì´ë¸”êµ¬ë¶„ì½”ë“œ == cd && ì ìš©ì¼ì <= cdNddt % D8) {
+					int data = pairSet[1][data1];  // ë°ì´í„°
+					int j    = pairSet[0][data];   // ë°ì´í„° ì‹œì‘
+					int jEnd = pairSet[1][data];   // ë°ì´í„° ë
 					while (j < jEnd) {
-						dataSet[dataList[j++]].getKey(keys, °è¾àÁ¤º¸);
+						dataSet[dataList[j++]].getKey(keys, ê³„ì•½ì •ë³´);
 					}
 					break;
 				}
-				if (Å×ÀÌºí±¸ºĞÄÚµå < cd) break;
+				if (í…Œì´ë¸”êµ¬ë¶„ì½”ë“œ < cd) break;
 			}
 		} while (false);
 
@@ -251,12 +251,12 @@ public class Meta {
 	}
 
 	/**
-	 * Å×ÀÌºí¿¡¼­ ÀĞÀº Çà°ú ¸ÂÃß¾î µ¥ÀÌÅÍ¸¦ °Ë»çÇÏ°Å³ª, µ¥ÀÌÅÍ¸¦ Ãâ·ÂÇÑ´Ù.
+	 * í…Œì´ë¸”ì—ì„œ ì½ì€ í–‰ê³¼ ë§ì¶”ì–´ ë°ì´í„°ë¥¼ ê²€ì‚¬í•˜ê±°ë‚˜, ë°ì´í„°ë¥¼ ì¶œë ¥í•œë‹¤.
 	 *
-	 * @param from  Ãâ·Â ½ÃÀÛ Á¾¸ñ ÀÎµ¦½º  -- 0, 1, 2, ...
-	 * @param count Ãâ·Â Á¾¸ñ ¼ö -- 0ÀÌ¸é µ¥ÀÌÅÍ¸¦ ¸ğµÎ °Ë»çÇÑ´Ù.
-	 * @param file  Ãâ·Â ÆÄÀÏ ÀÌ¸§ -- nullÀÌ°Å³ª Àß¸øµÈ ÀÌ¸§ÀÌ¸é Ç¥ÁØ Ãâ·ÂÀ¸·Î Ãâ·ÂÇÑ´Ù.
-	 * @throws Exception µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºí ÀĞ±â ¿À·ù. 
+	 * @param from  ì¶œë ¥ ì‹œì‘ ì¢…ëª© ì¸ë±ìŠ¤  -- 0, 1, 2, ...
+	 * @param count ì¶œë ¥ ì¢…ëª© ìˆ˜ -- 0ì´ë©´ ë°ì´í„°ë¥¼ ëª¨ë‘ ê²€ì‚¬í•œë‹¤.
+	 * @param file  ì¶œë ¥ íŒŒì¼ ì´ë¦„ -- nullì´ê±°ë‚˜ ì˜ëª»ëœ ì´ë¦„ì´ë©´ í‘œì¤€ ì¶œë ¥ìœ¼ë¡œ ì¶œë ¥í•œë‹¤.
+	 * @throws Exception ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸” ì½ê¸° ì˜¤ë¥˜. 
 	 */
 	public static void testOrPrint(int from, int count, String file)
 		                    throws Exception {
@@ -266,9 +266,9 @@ public class Meta {
 		List<Row>  rows = null;
 
 		if (testing) {
-			from = 0;                 // Ã³À½ºÎÅÍ
-			to   = im.length;         // ³¡±îÁö
-			rows = Dao.getRowList();  // Å×ÀÌºí¿¡¼­ ÀĞÀº µ¥ÀÌÅÍ Çà ¸®½ºÆ®
+			from = 0;                 // ì²˜ìŒë¶€í„°
+			to   = im.length;         // ëê¹Œì§€
+			rows = Dao.getRowList();  // í…Œì´ë¸”ì—ì„œ ì½ì€ ë°ì´í„° í–‰ ë¦¬ìŠ¤íŠ¸
 		} else {
 			if (file != null) {
 				try {
@@ -279,21 +279,21 @@ public class Meta {
 			}
 		}
 
-		int r = 0;                                  // Çà ÀÎµ¦½º
-		for (int m = from; m < to; m++) {           // Á¾¸ñ ÀÎµ¦½º
-			for (int c0 = cvr[0][m], c = c0; c < cvr[1][m]; c++) { // ´ãº¸ ÀÎµ¦½º
-				int data2 = data2List[cvr[2][m] + (c - c0)];       // ´ãº¸ µ¥ÀÌÅÍ
-				int i     = pairSet[0][data2];      // ´ãº¸ µ¥ÀÌÅÍ ½ÃÀÛ
-				int iEnd  = pairSet[1][data2];      // ´ãº¸ µ¥ÀÌÅÍ ³¡
+		int r = 0;                                  // í–‰ ì¸ë±ìŠ¤
+		for (int m = from; m < to; m++) {           // ì¢…ëª© ì¸ë±ìŠ¤
+			for (int c0 = cvr[0][m], c = c0; c < cvr[1][m]; c++) { // ë‹´ë³´ ì¸ë±ìŠ¤
+				int data2 = data2List[cvr[2][m] + (c - c0)];       // ë‹´ë³´ ë°ì´í„°
+				int i     = pairSet[0][data2];      // ë‹´ë³´ ë°ì´í„° ì‹œì‘
+				int iEnd  = pairSet[1][data2];      // ë‹´ë³´ ë°ì´í„° ë
 				while (i < iEnd) {
-					int  data1 = data1List[i++];    // (±¸ºĞ-Á¾·áÀÏ, µ¥ÀÌÅÍ) Â¦
-					int cdNddt = intSet[pairSet[0][data1]];  // ±¸ºĞ-Á¾·áÀÏ
-					int   data =        pairSet[1][data1];   // µ¥ÀÌÅÍ
-					int j      = pairSet[0][data];           // µ¥ÀÌÅÍ ½ÃÀÛ
-					int jEnd   = pairSet[1][data];           // µ¥ÀÌÅÍ ³¡ 
+					int  data1 = data1List[i++];    // (êµ¬ë¶„-ì¢…ë£Œì¼, ë°ì´í„°) ì§
+					int cdNddt = intSet[pairSet[0][data1]];  // êµ¬ë¶„-ì¢…ë£Œì¼
+					int   data =        pairSet[1][data1];   // ë°ì´í„°
+					int j      = pairSet[0][data];           // ë°ì´í„° ì‹œì‘
+					int jEnd   = pairSet[1][data];           // ë°ì´í„° ë 
 					while (j < jEnd) {
 						if (testing) {
-							String msg = "Çà ÀÎµ¦½º = " + r;
+							String msg = "í–‰ ì¸ë±ìŠ¤ = " + r;
 							Row    row = rows.get(r++);
 							assertEquals(msg, row.imCd, im[m]);
 							assertEquals(msg, row.cvrCd, intSet[cvrList[c]]);
@@ -301,10 +301,10 @@ public class Meta {
 							assertEquals(msg, row.data, dataSet[dataList[j++]]);
 						} else {
 							out.format("%s%05d CLA%05d %d %d %s\n",
-									PREFIX[im[m] / D5], im[m] % D5, // Á¾¸ñ ÄÚµå
-									intSet[cvrList[c]],       // ´ãº¸ ÄÚµå
-									cdNddt / D8, cdNddt % D8, // ±¸ºĞ, Á¾·áÀÏ
-									dataSet[dataList[j++]]);  // µ¥ÀÌÅÍ
+									PREFIX[im[m] / D5], im[m] % D5, // ì¢…ëª© ì½”ë“œ
+									intSet[cvrList[c]],       // ë‹´ë³´ ì½”ë“œ
+									cdNddt / D8, cdNddt % D8, // êµ¬ë¶„, ì¢…ë£Œì¼
+									dataSet[dataList[j++]]);  // ë°ì´í„°
 						}
 					}
 				}
@@ -312,7 +312,7 @@ public class Meta {
 		}
 
 		if (testing) {
-			assertEquals("Çà ¼ö", rows.size(), r);  // Çà ¼ö°¡ ¸Â´ÂÁö °Ë»çÇÑ´Ù
+			assertEquals("í–‰ ìˆ˜", rows.size(), r);  // í–‰ ìˆ˜ê°€ ë§ëŠ”ì§€ ê²€ì‚¬í•œë‹¤
 		} else {
 			if (out != System.out) {
 				out.close();

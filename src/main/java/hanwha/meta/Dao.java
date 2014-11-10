@@ -18,49 +18,49 @@ class Dao {
 	private static final String QUERY =
 "SELECT DISTINCT\n"+
 "       CASE SUBSTR(A.INS_IMCD,1,2) WHEN 'IA' THEN '0' ELSE '1' END ||\n"+
-"       SUBSTR(A.INS_IMCD,3) Á¾¸ñÄÚµå\n"+
-"     , SUBSTR(A.CVRCD,4)    ´ãº¸ÄÚµå\n"+
-"     , A.LTPRM_BA_TABL_FLGCD||TO_CHAR(A.AP_NDDT,'YYYYMMDD') Å×ÀÌºí±¸ºÐ_Á¾·áÀÏ\n"+
+"       SUBSTR(A.INS_IMCD,3) ì¢…ëª©ì½”ë“œ\n"+
+"     , SUBSTR(A.CVRCD,4)    ë‹´ë³´ì½”ë“œ\n"+
+"     , A.LTPRM_BA_TABL_FLGCD||TO_CHAR(A.AP_NDDT,'YYYYMMDD') í…Œì´ë¸”êµ¬ë¶„_ì¢…ë£Œì¼\n"+
 "     , CASE A.BA_TABL_IDNFR_CLMNM\n"+
-"       WHEN           'Á¾±¸ºÐÄÚµå' THEN 0\n"+
-"       WHEN             '¼ºº°ÄÚµå' THEN 1\n"+
-"       WHEN         'º¸»óÇÑµµÄÚµå' THEN 2\n"+
-"       WHEN             'º¸Çè±â°£' THEN 3  -- Number\n"+
-"       WHEN             '³³ÀÔ±â°£' THEN 4  -- Number\n"+
-"       WHEN         'Àç¹°±¸ºÐÄÚµå' THEN 5\n"+
-"       WHEN         '¿îÀüÇüÅÂÄÚµå' THEN 6\n"+
-"       WHEN     '½Å±Ô°»½Å±¸ºÐÄÚµå' THEN 7\n"+
-"       WHEN         '°¡ÀÔ±¸ºÐÄÚµå' THEN 8\n"+
-"       WHEN             '¾÷Á¾ÄÚµå' THEN 9\n"+
-"       WHEN             '±Þ¼öÄÚµå' THEN 10\n"+
-"       WHEN         '¸¸±â±¸ºÐÄÚµå' THEN 11\n"+
-"       WHEN               '¼¼¸¸±â' THEN 12 -- Number\n"+
-"       WHEN         '¿äÀ²±¸ºÐÄÚµå' THEN 13\n"+
-"       WHEN 'ÇÇº¸ÇèÀÚ°ü°è±¸ºÐÄÚµå' THEN 14\n"+
-"       WHEN             '°¡ÀÔ¿¬·É' THEN 15 -- Number\n"+
-"       WHEN         '³³ÀÔÁÖ±âÄÚµå' THEN 16\n"+
-"       WHEN             '°æ°ú³â¼ö' THEN 17 -- Number\n"+
-"                                   ELSE 18 END Å°ÀÎµ¦½º\n"+
-"     , A.IDNFR_ADM_ITNM                        Å°°ªÇ×¸ñ¸í\n"+
-"     , B.CND_IT_IDNFR_CLMNM                    Á¶°ÇÇ×¸ñ¸í\n"+
-"     , B.ADMIT_AP_CND_FLGCD                    ºñ±³¿¬»êÀÚ\n"+
+"       WHEN           'ì¢…êµ¬ë¶„ì½”ë“œ' THEN 0\n"+
+"       WHEN             'ì„±ë³„ì½”ë“œ' THEN 1\n"+
+"       WHEN         'ë³´ìƒí•œë„ì½”ë“œ' THEN 2\n"+
+"       WHEN             'ë³´í—˜ê¸°ê°„' THEN 3  -- Number\n"+
+"       WHEN             'ë‚©ìž…ê¸°ê°„' THEN 4  -- Number\n"+
+"       WHEN         'ìž¬ë¬¼êµ¬ë¶„ì½”ë“œ' THEN 5\n"+
+"       WHEN         'ìš´ì „í˜•íƒœì½”ë“œ' THEN 6\n"+
+"       WHEN     'ì‹ ê·œê°±ì‹ êµ¬ë¶„ì½”ë“œ' THEN 7\n"+
+"       WHEN         'ê°€ìž…êµ¬ë¶„ì½”ë“œ' THEN 8\n"+
+"       WHEN             'ì—…ì¢…ì½”ë“œ' THEN 9\n"+
+"       WHEN             'ê¸‰ìˆ˜ì½”ë“œ' THEN 10\n"+
+"       WHEN         'ë§Œê¸°êµ¬ë¶„ì½”ë“œ' THEN 11\n"+
+"       WHEN               'ì„¸ë§Œê¸°' THEN 12 -- Number\n"+
+"       WHEN         'ìš”ìœ¨êµ¬ë¶„ì½”ë“œ' THEN 13\n"+
+"       WHEN 'í”¼ë³´í—˜ìžê´€ê³„êµ¬ë¶„ì½”ë“œ' THEN 14\n"+
+"       WHEN             'ê°€ìž…ì—°ë ¹' THEN 15 -- Number\n"+
+"       WHEN         'ë‚©ìž…ì£¼ê¸°ì½”ë“œ' THEN 16\n"+
+"       WHEN             'ê²½ê³¼ë…„ìˆ˜' THEN 17 -- Number\n"+
+"                                   ELSE 18 END í‚¤ì¸ë±ìŠ¤\n"+
+"     , A.IDNFR_ADM_ITNM                        í‚¤ê°’í•­ëª©ëª…\n"+
+"     , B.CND_IT_IDNFR_CLMNM                    ì¡°ê±´í•­ëª©ëª…\n"+
+"     , B.ADMIT_AP_CND_FLGCD                    ë¹„êµì—°ì‚°ìž\n"+
 "     , CASE B.CND_IT_CNDVL WHEN '*' THEN '0'\n"+
-"       ELSE B.CND_IT_CNDVL END                 Á¶°Ç°ª\n"+
+"       ELSE B.CND_IT_CNDVL END                 ì¡°ê±´ê°’\n"+
 "  FROM IGD_LTPRM_BA_ATR_META A LEFT JOIN\n"+
 "       IGD_ADM_IT_AP_CND B\n"+
-"    ON A.LTPRM_BA_TABL_FLGCD = B.LTPRM_BA_TABL_FLGCD -- Å×ÀÌºí±¸ºÐÄÚµå\n"+
-"   AND A.INS_IMCD            = B.INS_IMCD            -- º¸ÇèÁ¾¸ñÄÚµå\n"+
-"   AND A.CVRCD               = B.CVRCD               -- ´ãº¸ÄÚµå\n"+
-"   AND A.BA_TABL_IDNFR_CLMNM = B.ST_IT_IDNFR_CLMNM   -- Å°ÀÎµ¦½º\n"+
-"   AND A.AP_NDDT             = B.AP_NDDT             -- Àû¿ëÁ¾·áÀÏÀÚ\n"+
-"   AND A.AP_STRDT            = B.AP_STRDT            -- Àû¿ë½ÃÀÛÀÏÀÚ\n"+
+"    ON A.LTPRM_BA_TABL_FLGCD = B.LTPRM_BA_TABL_FLGCD -- í…Œì´ë¸”êµ¬ë¶„ì½”ë“œ\n"+
+"   AND A.INS_IMCD            = B.INS_IMCD            -- ë³´í—˜ì¢…ëª©ì½”ë“œ\n"+
+"   AND A.CVRCD               = B.CVRCD               -- ë‹´ë³´ì½”ë“œ\n"+
+"   AND A.BA_TABL_IDNFR_CLMNM = B.ST_IT_IDNFR_CLMNM   -- í‚¤ì¸ë±ìŠ¤\n"+
+"   AND A.AP_NDDT             = B.AP_NDDT             -- ì ìš©ì¢…ë£Œì¼ìž\n"+
+"   AND A.AP_STRDT            = B.AP_STRDT            -- ì ìš©ì‹œìž‘ì¼ìž\n"+
 " WHERE A.LTPRM_BA_TABL_FLGCD BETWEEN '01' AND '03'\n"+
-"   AND A.BA_TABL_IDNFR_CLMNM <> 'Å°¾øÀ½'\n"+
-"   AND A.BA_TABL_IDNFR_CLMNM <> '°æ°ú±â°£'\n"+
+"   AND A.BA_TABL_IDNFR_CLMNM <> 'í‚¤ì—†ìŒ'\n"+
+"   AND A.BA_TABL_IDNFR_CLMNM <> 'ê²½ê³¼ê¸°ê°„'\n"+
 "   AND A.BA_TABL_IDNFR_CLMNM NOT LIKE '% '\n"+
 "   AND (B.ADMIT_AP_CND_FLGCD is null OR\n"+
 "        B.ADMIT_AP_CND_FLGCD BETWEEN '01' AND '06')\n"+
-" ORDER BY Á¾¸ñÄÚµå,´ãº¸ÄÚµå,Å×ÀÌºí±¸ºÐ_Á¾·áÀÏ, Å°ÀÎµ¦½º,Å°°ªÇ×¸ñ¸í,Á¶°ÇÇ×¸ñ¸í,ºñ±³¿¬»êÀÚ,Á¶°Ç°ª\n";
+" ORDER BY ì¢…ëª©ì½”ë“œ,ë‹´ë³´ì½”ë“œ,í…Œì´ë¸”êµ¬ë¶„_ì¢…ë£Œì¼, í‚¤ì¸ë±ìŠ¤,í‚¤ê°’í•­ëª©ëª…,ì¡°ê±´í•­ëª©ëª…,ë¹„êµì—°ì‚°ìž,ì¡°ê±´ê°’\n";
 
 	static List<Row> getRowList() throws Exception {
 		try (Closeable c = new AnnotationConfigApplicationContext(Config.class)) {
@@ -68,14 +68,14 @@ class Dao {
 				@Override
 				public Row mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Row row    = new Row();
-					row.imCd   = rs.getInt("Á¾¸ñÄÚµå");
-					row.cvrCd  = rs.getInt("´ãº¸ÄÚµå");
-					row.cdNddt = rs.getInt("Å×ÀÌºí±¸ºÐ_Á¾·áÀÏ");
-					row.data   = new Data(rs.getInt("Å°ÀÎµ¦½º"),
-					                      rs.getString("Å°°ªÇ×¸ñ¸í"),
-					                      rs.getString("Á¶°ÇÇ×¸ñ¸í"),
-					                      rs.getInt("ºñ±³¿¬»êÀÚ"),
-					                      rs.getInt("Á¶°Ç°ª"));
+					row.imCd   = rs.getInt("ì¢…ëª©ì½”ë“œ");
+					row.cvrCd  = rs.getInt("ë‹´ë³´ì½”ë“œ");
+					row.cdNddt = rs.getInt("í…Œì´ë¸”êµ¬ë¶„_ì¢…ë£Œì¼");
+					row.data   = new Data(rs.getInt("í‚¤ì¸ë±ìŠ¤"),
+					                      rs.getString("í‚¤ê°’í•­ëª©ëª…"),
+					                      rs.getString("ì¡°ê±´í•­ëª©ëª…"),
+					                      rs.getInt("ë¹„êµì—°ì‚°ìž"),
+					                      rs.getInt("ì¡°ê±´ê°’"));
 					return row;
 				}
 			});

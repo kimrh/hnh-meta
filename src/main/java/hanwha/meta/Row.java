@@ -1,23 +1,23 @@
 package hanwha.meta;
 
 /**
- * Á¾¸ñÄÚµå, ´ãº¸ÄÚµå, ±¸ºÐ_Á¾·áÀÏ°ú ±×°Í¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ
+ * ì¢…ëª©ì½”ë“œ, ë‹´ë³´ì½”ë“œ, êµ¬ë¶„_ì¢…ë£Œì¼ê³¼ ê·¸ê²ƒì— í•´ë‹¹í•˜ëŠ” ë°ì´í„°
  */
 class Row {
-	int  imCd, cvrCd, cdNddt;  // Á¾¸ñÄÚµå, ´ãº¸ÄÚµå, ±¸ºÐ_Á¾·áÀÏ
-	Data data;                 // µ¥ÀÌÅÍ
+	int  imCd, cvrCd, cdNddt;  // ì¢…ëª©ì½”ë“œ, ë‹´ë³´ì½”ë“œ, êµ¬ë¶„_ì¢…ë£Œì¼
+	Data data;                 // ë°ì´í„°
 
-	// Å×ÀÌºí±¸ºÐ°ú Á¾·áÀÏÀÌ °°Àº°¡?
+	// í…Œì´ë¸”êµ¬ë¶„ê³¼ ì¢…ë£Œì¼ì´ ê°™ì€ê°€?
 	boolean sameCdNddt(Row o) {
 		return cdNddt == o.cdNddt && cvrCd == o.cvrCd && imCd == o.imCd;
 	}
 
-	// ´ãº¸ÄÚµå°¡ °°Àº°¡?
+	// ë‹´ë³´ì½”ë“œê°€ ê°™ì€ê°€?
 	boolean sameCvrcd(Row o) {
 		return cvrCd == o.cvrCd && imCd == o.imCd;
 	}
 
-	// Á¾¸ñÄÚµå°¡ °°Àº°¡?
+	// ì¢…ëª©ì½”ë“œê°€ ê°™ì€ê°€?
 	boolean sameImcd(Row o) {
 		return imCd == o.imCd;
 	}
