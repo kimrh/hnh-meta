@@ -7,6 +7,13 @@ import hanwha.util.IntSet;
 import hanwha.util.PairSet;
 import hanwha.util.Set;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +21,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Meta {
+	private static String       FILE_PATH = "meta_file";
+
 	private static boolean     refreshing = false;
 	private static AtomicInteger useCount = new AtomicInteger();
 
@@ -37,9 +46,44 @@ public class Meta {
 
 	/**
 	 * 보험료/준비금/사업비 찾기 키 구성 정보를 갱신한다.
-	 * @throws Exception 테이블 읽기 오류, 데이터 배열 원소 크기 오류.
+	 * FILE_PATH가 없으면 SQL을 실행하여 데이터 파일을 만든다.
+	 * @throws Exception 데이터 읽기 에러 또는 download() 에러.
 	 */
 	public static synchronized void refresh() throws Exception {
+		time(null);
+		File file = new File(FILE_PATH);
+		int  size;
+		while ((size = (int) file.length()) < 1) {
+			download(file);
+		}
+        try (ObjectInputStream in = new ObjectInputStream(
+                                    new BufferedInputStream(
+                                    new FileInputStream(file)))) {
+    		time(FILE_PATH);
+    		refreshing = true;
+    		while (0 < useCount.get()) {
+    			Thread.sleep(1);
+    		}
+    		intSet     =     (int[]) in.readObject(); // 구분-종료일 집합
+    		dataSet    =    (Data[]) in.readObject(); // 데이터 집합
+    		pairSet    = (short[][]) in.readObject(); // 정수 짝 집합
+    		dataList   =   (short[]) in.readObject(); // 데이터 열
+    		data1List  =   (short[]) in.readObject(); // 담보 데이터 열
+    		data2List  =   (short[]) in.readObject(); // 종목 데이터 열
+    		cvrList    =   (short[]) in.readObject(); // 담보 코드 인덱스 열
+    		cvr        = (short[][]) in.readObject(); // 담보(코드 인덱스 열 시작, 끝, 데이터 열 시작) 열
+    		im         =     (int[]) in.readObject(); // 종목 코드 열
+    		refreshing = false;
+    		time("Read");
+        }
+		System.out.format("%d KBytes\n", (size + 1023) / 1024);
+	}
+
+	/**
+	 * 보험료/준비금/사업비 찾기 키 구성 정보를 갱신한다.
+	 * @throws Exception 테이블 읽기 오류, 데이터 배열 원소 크기 오류.
+	 */
+	public static void download(File file) throws Exception {
 		IntSet     intSet0 = new  IntSet(3000);
 		Set<Data> dataSet0 = new   Set<>(300);
 		PairSet   pairSet0 = new PairSet(10000);
@@ -51,7 +95,7 @@ public class Meta {
 
 		time(null);
 		List<Row> rows = Dao.getRowList();    // 키 구성 정보를 모두 읽는다
-		time("Read");
+		time("SQL");
 
 		int rowCount = rows.size();           // 키 구성 정보 수
 		rows.add(new Row());                  // 키 구성 정보의 끝을 표시한다
@@ -59,16 +103,16 @@ public class Meta {
 		for (int i = 0; i < rowCount; i++) {
 			Row thisRow = rows.get(i);
 			Row nextRow = rows.get(i + 1);
-			dataList0.append(dataSet0.find(thisRow.data));     // 데이터
+			dataList0.append(dataSet0.find(thisRow.data)); // 데이터
 
 			if (!thisRow.sameCdNddt(nextRow)) {
-				int cdNddt = intSet0.find(thisRow.cdNddt);     // 구분-종료일
-				int   data = pairSet0.find(dataList0.find());  // 데이터 리스트
+				int cdNddt = intSet0.find(thisRow.cdNddt); // 구분-종료일
+				int   data = dataList0.find(pairSet0);     // 데이터 리스트
 				data1List0.append(pairSet0.find(cdNddt, data));
 
 				if (!thisRow.sameCvrcd(nextRow)) {
-					cvrList0.append(intSet0.find(thisRow.cvrCd));  // 담보 코드
-					data2List0.append(pairSet0.find(data1List0.find()));
+					cvrList0.append(intSet0.find(thisRow.cvrCd)); // 담보 코드
+					data2List0.append(data1List0.find(pairSet0)); // 담보 데이터
 
 					if (!thisRow.sameImcd(nextRow)) {
 						imCvr0.append(thisRow.imCd,        // 종목 코드
@@ -79,37 +123,32 @@ public class Meta {
 			}
 		}
 		time("Index");
-		
-		refreshing = true;
-		while (0 < useCount.get()) {
-			Thread.sleep(1);
-		}
-		intSet     =    intSet0.copy();
-		dataSet    =   dataSet0.copy(); 
-		pairSet    =   pairSet0.copyToShorts();
-		dataList   =  dataList0.copyToShorts();
-		data1List  = data1List0.copyToShorts();
-		data2List  = data2List0.copyToShorts();
-		cvrList    =   cvrList0.copyToShorts();
-		cvr        =     imCvr0.copyCvr();
-		im         =     imCvr0.copyIm();
-		refreshing = false;
-		time("Refresh");
-		
-		int totalSize = 100 * dataSet.length + 4 * (im.length + intSet.length) +
-		          2 * (data2List.length +  data1List.length + dataList.length +
-		          2 * pairSet[0].length + 3 * cvr[0].length +  cvrList.length);
+        try (ObjectOutputStream out = new ObjectOutputStream(
+        		                      new BufferedOutputStream(
+        		                      new FileOutputStream(file)))) {
+        	out.writeObject(intSet0.copy());
+        	out.writeObject(dataSet0.copy());
+        	out.writeObject(pairSet0.copyToShorts());
+        	out.writeObject(dataList0.copyToShorts());
+        	out.writeObject(data1List0.copyToShorts());
+        	out.writeObject(data2List0.copyToShorts());
+        	out.writeObject(cvrList0.copyToShorts());
+        	out.writeObject(imCvr0.copyCvr());
+        	out.writeObject(imCvr0.copyIm());
+        }
+		time("Write");
 
-		System.out.format("\n(%d rows --> %d KBytes)\n" +
+		System.out.format("\n%d rows --> %d KBytes (%s)\n" +
 		           "im[%d] cvr[3][%d] cvrList[%d](%d)\n" + 
 		           "intSet[%d] pairSet[2][%d] dataSet[%d]\n" +
 		           "dataList[%d](%d) data1List[%d](%d) data2List[%d](%d)\n",
-		                   rowCount, (totalSize + 1023) / 1024, 
-		   im.length, cvr[0].length, cvrList.length, cvrList0.getIndexSize(),
-		              intSet.length, pairSet[0].length, dataSet.length,
-		            dataList.length,  dataList0.getIndexSize(),
-		           data1List.length, data1List0.getIndexSize(),
-		           data2List.length, data2List0.getIndexSize());
+		                        rowCount, (file.length() + 1023) / 1024,
+		                        file.getAbsolutePath(),
+		    imCvr0.size(), imCvr0.size(), cvrList0.size(), cvrList0.indexSize(),
+		                  intSet0.size(), pairSet0.size(), dataSet0.size(),
+		                dataList0.size(),  dataList0.indexSize(),
+		               data1List0.size(), data1List0.indexSize(),
+		               data2List0.size(), data2List0.indexSize());
 	}
 
 	/**
@@ -172,6 +211,10 @@ public class Meta {
 
 		short[][] copyCvr() {
 			return copyCvr(size);
+		}
+
+		int size() {
+			return size;
 		}
 
 		private short[][] copyCvr(int newSize) {

@@ -1,6 +1,7 @@
 import hanwha.meta.Meta;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MetaDataTest {
@@ -9,7 +10,7 @@ public class MetaDataTest {
 		Class.forName(Meta.class.getName());
 	}
 
-//	@Ignore
+	@Ignore
 	@Test
 	public void test() throws Exception {
 		Meta.testOrPrint(0, 0, null);         // 테스트

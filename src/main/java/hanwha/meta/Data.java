@@ -1,11 +1,13 @@
 package hanwha.meta;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * 키 구성 메타 데이터
  */
-class Data implements Comparable<Data> {
+class Data implements Comparable<Data>, Serializable {
+	private static final long serialVersionUID = -2650552921340915444L;
 	private int    keyIndex;  // 키 인덱스
 	private String keyItnm;   // 키값항목명
 	private String cndItnm;   // 조건항목명
