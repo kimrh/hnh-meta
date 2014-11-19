@@ -21,8 +21,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Meta {
-	private static String       FILE_PATH = "meta_file";
-
+	private static final String  DATA_DIR = "."; 
+	private static final File   DATA_FILE = new File(DATA_DIR, 
+			                                    Meta.class.getName() + ".data");
 	private static boolean     refreshing = false;
 	private static AtomicInteger useCount = new AtomicInteger();
 
@@ -46,20 +47,22 @@ public class Meta {
 
 	/**
 	 * 보험료/준비금/사업비 찾기 키 구성 정보를 갱신한다.
-	 * FILE_PATH가 없으면 SQL을 실행하여 데이터 파일을 만든다.
+	 * 데이터 파일이 없으면 데이터베이스에서 다운로드하여 새로 만든다.
 	 * @throws Exception 데이터 읽기 에러 또는 download() 에러.
 	 */
 	public static synchronized void refresh() throws Exception {
+		final String DATA_PATH = DATA_FILE.getCanonicalPath();
 		time(null);
-		File file = new File(FILE_PATH);
-		int  size;
-		while ((size = (int) file.length()) < 1) {
-			download(file);
+		if (DATA_FILE.length() < 1) {
+			download(DATA_FILE);
+			if (DATA_FILE.length() < 1) {
+				throw new Exception(DATA_PATH + " 파일을 만들 수 없습니다.");
+			}
 		}
         try (ObjectInputStream in = new ObjectInputStream(
                                     new BufferedInputStream(
-                                    new FileInputStream(file)))) {
-    		time(FILE_PATH);
+                                    new FileInputStream(DATA_FILE)))) {
+    		time(DATA_PATH);
     		refreshing = true;
     		while (0 < useCount.get()) {
     			Thread.sleep(1);
@@ -76,11 +79,12 @@ public class Meta {
     		refreshing = false;
     		time("Read");
         }
-		System.out.format("%d KBytes\n", (size + 1023) / 1024);
+		System.out.format("%d KBytes\n", (DATA_FILE.length() + 1023) / 1024);
 	}
 
 	/**
-	 * 보험료/준비금/사업비 찾기 키 구성 정보를 갱신한다.
+	 * SQL을 실행하여 얻은 데이터로 메모리 이미지를 만들고 파일에 기록한다.
+	 * @param file 메모리 이미지 파일
 	 * @throws Exception 테이블 읽기 오류, 데이터 배열 원소 크기 오류.
 	 */
 	public static void download(File file) throws Exception {
