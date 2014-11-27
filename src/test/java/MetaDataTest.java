@@ -13,8 +13,9 @@ public class MetaDataTest {
 	@Ignore
 	@Test
 	public void test() throws Exception {
-		Meta.testOrPrint(0, 0, null);         // 테스트
+		Meta.testOrPrint(0, 0, null);
 		Meta.testOrPrint(30, 1, null);        // 31번째 종목부터 1종목 콘솔에 출력
+		Meta.testOrPrint(2100, 1, null);	//2100번째 종목으로부터 1종목 콘솔에 출력
 		Meta.testOrPrint(30, 2, "rows.txt");  // 31번째 종목부터 2종목 파일에 출력
 	}
 }
